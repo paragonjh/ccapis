@@ -113,12 +113,13 @@ class RESTAPIClient(metaclass=ABCMeta):
         :param kwargs: Optional Kwargs for self.sign() and requests.request()
         :return: request.response() obj
         """
-
-        endpoint_path = '/' + endpoint
+        if self.version:
+            endpoint_path = '/' + self.version + '/' + endpoint
+        else:
+            endpoint_path = '/' + endpoint
 
         url = self.uri + endpoint_path
         if authenticate:  # sign off kwargs and url before sending request
-            endpoint_path = '/' + self.version + '/' + endpoint
             url, request_kwargs = self.sign(url, endpoint, endpoint_path,
                                             method_verb, *args, **kwargs)
         else:
