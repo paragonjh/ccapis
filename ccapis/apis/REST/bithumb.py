@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 class BithumbREST(RESTAPIClient):
-    def __init__(self, user_id='', key=None, secret=None, api_version='v1.1',
+    def __init__(self, user_id='', key=None, secret=None, api_version=None,
                  url='https://api.bithumb.com', timeout=5):
         self.id = user_id
         super(BithumbREST, self).__init__(url, api_version=api_version,
