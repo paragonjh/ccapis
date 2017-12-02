@@ -83,8 +83,8 @@ class CoinoneREST(RESTAPIClient):
         return r
 
 
-    def public_query(self, endpoint, **kwargs):
-        return self.query('GET', endpoint, **kwargs)
+    async def public_query(self, endpoint, **kwargs):
+        return await self.query('GET', endpoint, **kwargs)
 
     def private_query(self, endpoint, **kwargs):
         return self.query('GET', endpoint, authenticate=True, **kwargs)

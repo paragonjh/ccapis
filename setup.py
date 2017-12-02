@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 
-setup(name='ccapis', version='0.3.2', author='Jonathan',
+setup(name='ccapis', version='0.3.3', author='Jonathan',
       author_email='imyme6yo@gmail.com',
       url="https://github.com/paragonjh/ccapis.git",
       packages=['ccapis', 'ccapis.apis', 'ccapis.apis.WSS', 'ccapis.apis.REST',

@@ -46,8 +46,8 @@ class PoloniexREST(RESTAPIClient):
     async def public_query(self, endpoint, **kwargs):
         return await self.query('GET', 'public?command=' + endpoint, **kwargs)
 
-    def private_query(self, endpoint, **kwargs):
-        return self.query('POST', endpoint,
+    async def private_query(self, endpoint, **kwargs):
+        return await self.query('POST', endpoint,
                           authenticate=True, **kwargs)
 
     def get_pair(self, base, count):
