@@ -23,15 +23,17 @@ log = logging.getLogger(__name__)
 class KorbitREST(RESTAPIClient):
     def __init__(self, key=None, secret=None, api_version='v1',
                  url='https://api.korbit.co.kr', timeout=5, **kwargs):
-        try:
+        if 'user_id' in kwargs:
             self.id = kwargs['user_id']
+
+        if 'password' in kwargs:
             self.password = kwargs['password']
-        finally:
-            self.expire = 3600
-            self.access_token = ''
-            self.refresh_token = ''
-            self.access_time = 0
-            super(KorbitREST, self).__init__(url, api_version=api_version,
+
+        self.expire = 3600
+        self.access_token = ''
+        self.refresh_token = ''
+        self.access_time = 0
+        super(KorbitREST, self).__init__(url, api_version=api_version,
                                            key=key, secret=secret,
                                            timeout=timeout)
 

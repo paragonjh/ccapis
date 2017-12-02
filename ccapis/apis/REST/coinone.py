@@ -22,10 +22,10 @@ log = logging.getLogger(__name__)
 class CoinoneREST(RESTAPIClient):
     def __init__(self, key=None, secret=None, api_version='v2',
                  url='https://api.coinone.co.kr', timeout=5, **kwargs):
-        try:
+        if 'user_id' in kwargs:
             self.id = kwargs['user_id']
-        finally:
-            super(CoinoneREST, self).__init__(url, api_version=api_version,
+
+        super(CoinoneREST, self).__init__(url, api_version=api_version,
                                                key=key, secret=secret,
                                                timeout=timeout)
 
