@@ -73,7 +73,7 @@ class RESTAPIClient(metaclass=ABCMeta):
         return str(round(100000 * time.time()) * 2)
 
     @staticmethod
-    def api_request(*args, **kwargs):
+    async def api_request(*args, **kwargs):
         """
         Wrapper which converts a requests.Response into our custom APIResponse
         object
@@ -81,7 +81,7 @@ class RESTAPIClient(metaclass=ABCMeta):
         :param kwargs:
         :return:
         """
-        r = requests.request(*args, **kwargs)
+        r = await requests.request(*args, **kwargs)
         return RESTAPIResponse(r)
 
     @abstractmethod
@@ -100,7 +100,7 @@ class RESTAPIClient(metaclass=ABCMeta):
 
         return url, {'params': {'test_param': "authenticated_chimichanga"}}
 
-    def query(self, method_verb, endpoint, authenticate=False,
+    async def query(self, method_verb, endpoint, authenticate=False,
               *args, **kwargs):
         """
         Queries exchange using given data. Defaults to unauthenticated query.
@@ -125,7 +125,7 @@ class RESTAPIClient(metaclass=ABCMeta):
         else:
             request_kwargs = kwargs
         log.debug("Making request to: %s, kwargs: %s", url, request_kwargs)
-        r = self.api_request(method_verb, url, timeout=self.timeout,
+        r = await self.api_request(method_verb, url, timeout=self.timeout,
                              **request_kwargs)
         log.debug("Made %s request made to %s, with headers %s and body %s. "
                   "Status code %s", r.request.method,

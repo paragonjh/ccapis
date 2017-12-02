@@ -34,10 +34,10 @@ class Poloniex(PoloniexREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter, **kwargs):
+    async def ticker(self, base, counter, **kwargs):
         # pair = self.get_pair(base, counter)
         # return self.public_query('returnTicker', params=kwargs)[pair]
-        return self.public_query('returnTicker', params=kwargs)
+        return await self.public_query('returnTicker', params=kwargs)
 
     @return_api_response(fmt.order_book)
     def order_book(self, pair, **kwargs):

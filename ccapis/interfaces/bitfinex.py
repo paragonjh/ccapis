@@ -38,9 +38,9 @@ class Bitfinex(BitfinexREST):
         return self.public_query('book/%s' % pair, params=kwargs)
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter, **kwargs):
+    async def ticker(self, base, counter, **kwargs):
         pair = self.get_pair(base, counter)
-        return self.public_query('pubticker/%s' % pair, params=kwargs)
+        return await self.public_query('pubticker/%s' % pair, params=kwargs)
 
     @return_api_response(fmt.trades)
     def trades(self, pair, **kwargs):

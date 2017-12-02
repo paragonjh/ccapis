@@ -27,10 +27,10 @@ class Korbit(KorbitREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter):
+    async def ticker(self, base, counter):
         pair = self.get_pair(base, counter)
         q = {'currency_pair': pair}
-        return self.public_query('ticker', params=q)
+        return await self.public_query('ticker', params=q)
 
     # @return_api_response(fmt.order_book)
     # #parameter: {'count':10(default 10)}

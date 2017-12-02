@@ -27,9 +27,9 @@ class Coinone(CoinoneREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter=None):
+    async def ticker(self, base, counter=None):
         q = {'currency': base}
-        return self.public_query('ticker', params=q)
+        return await self.public_query('ticker', params=q)
 
     # @return_api_response(fmt.order_book)
     # #parameter: {'count':10(default 10)}

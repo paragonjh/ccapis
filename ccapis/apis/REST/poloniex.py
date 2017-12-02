@@ -43,8 +43,8 @@ class PoloniexREST(RESTAPIClient):
 
         return uri, {'headers': headers, 'data': params}
 
-    def public_query(self, endpoint, **kwargs):
-        return self.query('GET', 'public?command=' + endpoint, **kwargs)
+    async def public_query(self, endpoint, **kwargs):
+        return await self.query('GET', 'public?command=' + endpoint, **kwargs)
 
     def private_query(self, endpoint, **kwargs):
         return self.query('POST', endpoint,
