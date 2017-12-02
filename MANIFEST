@@ -11,6 +11,7 @@ ccapis/apis/REST/bithumb.py
 ccapis/apis/REST/bittrex.py
 ccapis/apis/REST/coinbase.py
 ccapis/apis/REST/coinone.py
+ccapis/apis/REST/korbit.py
 ccapis/apis/REST/poloniex.py
 ccapis/apis/REST/upbit.py
 ccapis/apis/WSS/__init__.py
@@ -21,6 +22,7 @@ ccapis/formatters/bithumb.py
 ccapis/formatters/bittrex.py
 ccapis/formatters/coinbase.py
 ccapis/formatters/coinone.py
+ccapis/formatters/korbit.py
 ccapis/formatters/poloniex.py
 ccapis/interfaces/__init__.py
 ccapis/interfaces/bitfinex.py
@@ -28,4 +30,5 @@ ccapis/interfaces/bithumb.py
 ccapis/interfaces/bittrex.py
 ccapis/interfaces/coinbase.py
 ccapis/interfaces/coinone.py
+ccapis/interfaces/korbit.py
 ccapis/interfaces/poloniex.py

@@ -39,7 +39,7 @@ class Bitfinex(BitfinexREST):
 
     @return_api_response(fmt.ticker)
     def ticker(self, base, counter, **kwargs):
-        pair = self.get_pair()
+        pair = self.get_pair(base, counter)
         return self.public_query('pubticker/%s' % pair, params=kwargs)
 
     @return_api_response(fmt.trades)
