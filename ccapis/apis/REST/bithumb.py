@@ -10,6 +10,7 @@ import base64
 import logging
 import hashlib
 import hmac
+import urllib
 
 # Import Homebrew
 from ccapis.apis.rest import RESTAPIClient
@@ -27,24 +28,53 @@ class BithumbREST(RESTAPIClient):
                                            timeout=timeout)
 
     def sign(self, url, endpoint, endpoint_path, method_verb, *args, **kwargs):
-        nonce = self.nonce()
-        message = nonce + self.id + self.key
-
-        signature = hmac.new(self.secret.encode(), message.encode(),
-                             hashlib.sha256)
-        signature = signature.hexdigest().upper()
-
+        __endpoint = {
+            'endpoint': endpoint
+        }
         try:
-            req = kwargs['params']
+            __uri = dict(endpoint, **kwargs['params'])
         except KeyError:
-            req = {}
-        req['key'] = self.key
-        req['nonce'] = nonce
-        req['signature'] = signature
-        return url, {'data': req}
+            __uri = endpoint
+
+        __nonce = self.nonce()
+        data = endpoint+ chr(0) + urllib.parse.urlencode(__uri) + chr(0) + __nonce
+        data = data.encode('utf-8')
+
+        h = hmac.new(bytes(self.secret.encode('utf-8')), data, hashlib.sha512)
+        signature = base64.b64encode( h.hexdigest().encode('utf-8') ).decode('utf-8')
+
+        headers = {
+            'Api-Key': self.key,
+            'Api-Sign': signature,
+            'Api-Nonce': __nonce
+        }
+
+        return url , {'headers': headers}
 
     def public_query(self, endpoint, **kwargs):
         return self.query('GET', 'public/' + endpoint, **kwargs)
 
     def private_query(self, endpoint, **kwargs):
         return self.query('GET', endpoint, authenticate=True, **kwargs)
+
+    # endpoint_item_array = {
+    #     "endpoint": endpoint
+    # };
+    #
+    # uri_array = dict(endpoint_item_array, **rgParams);  # Concatenate the two arrays.
+    #
+    # str_data = urllib.parse.urlencode(uri_array);
+    # data = endpoint + chr(0) + str_data + chr(0) + nonce;
+    # utf8_data = data.encode('utf-8');
+    #
+    # key = self.api_secret;
+    # utf8_key = key.encode('utf-8');
+    #
+    # h = hmac.new(bytes(utf8_key), utf8_data, hashlib.sha512);
+    # hex_output = h.hexdigest();
+    # utf8_hex_output = hex_output.encode('utf-8');
+    #
+    # api_sign = base64.b64encode(utf8_hex_output);
+    # utf8_api_sign = api_sign.decode('utf-8');
+
+#curl_handle.setopt(curl_handle.HTTPHEADER, ['Api-Key: ' + self.api_key, 'Api-Sign: ' + utf8_api_sign, 'Api-Nonce: ' + nonce]);

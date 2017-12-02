@@ -9,6 +9,7 @@ import math
 import base64
 import logging
 import hashlib
+import json
 import hmac
 
 # Import Homebrew
@@ -19,29 +20,32 @@ log = logging.getLogger(__name__)
 
 
 class CoinoneREST(RESTAPIClient):
-    def __init__(self, user_id='', key=None, secret=None, api_version=None,
-                 url='https://api.coinone.co.kr', timeout=5):
-        self.id = user_id
+    def __init__(self, key=None, secret=None, api_version='v2',
+                 url='https://api.coinone.co.kr', timeout=5, **kwargs):
+        self.id = kwargs['user_id']
         super(CoinoneREST, self).__init__(url, api_version=api_version,
                                            key=key, secret=secret,
                                            timeout=timeout)
 
     def sign(self, url, endpoint, endpoint_path, method_verb, *args, **kwargs):
-        nonce = self.nonce()
-        message = nonce + self.id + self.key
+        __nonce = self.nonce()
 
-        signature = hmac.new(self.secret.encode(), message.encode(),
-                             hashlib.sha256)
-        signature = signature.hexdigest().upper()
+        data = {
+            'nonce': int(__nonce)
+        }
+        payload = base64.b64encode(json.dumps(data))
 
-        try:
-            req = kwargs['params']
-        except KeyError:
-            req = {}
-        req['key'] = self.key
-        req['nonce'] = nonce
-        req['signature'] = signature
-        return url, {'data': req}
+        h = hmac.new(str(self.secret).upper(), str(payload), hashlib.sha512)
+        signature = h.hexdigest()
+
+        headers = {
+            'Content-type': 'application/json',
+            'X-COINONE-PAYLOAD': payload,
+            'X-COINONE-SIGNATURE': signature
+
+        }
+
+        return url, {'headers': headers}
 
     def public_query(self, endpoint, **kwargs):
         return self.query('GET', endpoint, **kwargs)

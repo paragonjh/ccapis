@@ -25,14 +25,14 @@ class BitfinexREST(RESTAPIClient):
 
     def sign(self, url, endpoint, endpoint_path, method_verb, *args, **kwargs):
         try:
-            req = kwargs['params']
+            params = kwargs['params']
         except KeyError:
-            req = {}
+            params = {}
         if self.version == 'v1':
-            req['request'] = endpoint_path
-            req['nonce'] = self.nonce()
+            params['request'] = endpoint_path
+            params['nonce'] = self.nonce()
 
-            js = json.dumps(req)
+            js = json.dumps(params)
             data = base64.standard_b64encode(js.encode('utf8'))
         else:
             data = '/api/' + endpoint_path + self.nonce() + json.dumps(req)

@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class Coinone(CoinoneREST):
-    def __init__(self, key='', secret='', key_file=''):
+    def __init__(self, key='', secret='', key_file='', ):
         super(Coinone, self).__init__(key, secret)
         if key_file:
             self.load_key(key_file)

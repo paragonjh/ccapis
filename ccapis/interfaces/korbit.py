@@ -17,8 +17,8 @@ log = logging.getLogger(__name__)
 
 
 class Korbit(KorbitREST):
-    def __init__(self, key='', secret='', key_file=''):
-        super(Korbit, self).__init__(key, secret)
+    def __init__(self, key='', secret='', key_file='', **kwargs):
+        super(Korbit, self).__init__(key, secret, **kwargs)
         if key_file:
             self.load_key(key_file)
 
