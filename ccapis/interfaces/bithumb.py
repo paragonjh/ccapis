@@ -1,5 +1,5 @@
 """
-https://bittrex.com/Home/Api
+https://api.bithumb.com
 """
 
 # Import Built-Ins
@@ -27,8 +27,8 @@ class Bithumb(BithumbREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, pair, **kwargs):
-        return self.public_query('ticker', params=pair)
+    def ticker(self, base, counter=None):
+        return self.public_query('ticker', params=base)
 
     @return_api_response(fmt.order_book)
     #parameter: {'count':10(default 10)}

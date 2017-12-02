@@ -28,10 +28,9 @@ class Bittrex(BittrexREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter, **kwargs):
+    def ticker(self, base, counter):
         pair = self.get_pair(base, counter)
         q = {'market': pair}
-        q.update(kwargs)
         return self.public_query('getmarketsummary', params=q)
 
     @return_api_response(fmt.order_book)

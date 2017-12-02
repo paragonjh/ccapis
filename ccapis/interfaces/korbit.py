@@ -1,5 +1,5 @@
 """
-https://api.coinone.co.kr
+https://api.korbit.co.kr
 """
 
 # Import Built-Ins
@@ -8,17 +8,17 @@ import logging
 # Import Third-Party
 
 # Import  Homebrew
-from ccapis.apis.REST import CoinoneREST
+from ccapis.apis.REST import KorbitREST
 from ccapis.formatters.base import return_api_response
-from ccapis.formatters.coinone import CoinoneFormatter as fmt
+from ccapis.formatters.korbit import KorbitFormatter as fmt
 
 # Init Logging Facilities
 log = logging.getLogger(__name__)
 
 
-class Coinone(CoinoneREST):
+class Korbit(KorbitREST):
     def __init__(self, key='', secret='', key_file=''):
-        super(Coinone, self).__init__(key, secret)
+        super(Korbit, self).__init__(key, secret)
         if key_file:
             self.load_key(key_file)
 
@@ -27,8 +27,9 @@ class Coinone(CoinoneREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter=None):
-        q = {'currency': base}
+    def ticker(self, base, counter):
+        pair = self.get_pair(base, counter)
+        q = {'currency_pair': pair}
         return self.public_query('ticker', params=q)
 
     # @return_api_response(fmt.order_book)
