@@ -12,14 +12,14 @@ import hashlib
 import hmac
 
 # Import Homebrew
-from ccapis.apis.REST.api import RESTAPIResponse
+from ccapis.apis.rest import RESTAPIClient
 
 
 log = logging.getLogger(__name__)
 
 
-class BithumbREST(RESTAPIResponse):
-    def __init__(self, user_id='', key=None, secret=None, api_version=None,
+class BithumbREST(RESTAPIClient):
+    def __init__(self, user_id='', key=None, secret=None, api_version='v1.1',
                  url='https://api.bithumb.com', timeout=5):
         self.id = user_id
         super(BithumbREST, self).__init__(url, api_version=api_version,

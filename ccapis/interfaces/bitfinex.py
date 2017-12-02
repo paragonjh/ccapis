@@ -32,7 +32,7 @@ class Bitfinex(BitfinexREST):
     """
     CC APIs Standardized Methods
     """
-    s
+
     @return_api_response(fmt.order_book)
     def order_book(self, pair, **kwargs):
         return self.public_query('book/%s' % pair, params=kwargs)
