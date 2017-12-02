@@ -22,10 +22,12 @@ log = logging.getLogger(__name__)
 class CoinoneREST(RESTAPIClient):
     def __init__(self, key=None, secret=None, api_version='v2',
                  url='https://api.coinone.co.kr', timeout=5, **kwargs):
-        self.id = kwargs['user_id']
-        super(CoinoneREST, self).__init__(url, api_version=api_version,
-                                           key=key, secret=secret,
-                                           timeout=timeout)
+        try:
+            self.id = kwargs['user_id']
+        finally:
+            super(CoinoneREST, self).__init__(url, api_version=api_version,
+                                               key=key, secret=secret,
+                                               timeout=timeout)
 
     def sign(self, url, endpoint, endpoint_path, method_verb, *args, **kwargs):
         __nonce = self.nonce()
