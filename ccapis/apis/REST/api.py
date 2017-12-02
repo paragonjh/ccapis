@@ -55,7 +55,7 @@ class APIClient(metaclass=ABCMeta):
         return str(round(100000 * time.time()) * 2)
 
     @staticmethod
-    async def api_request(*args, **kwargs):
+    def api_request(*args, **kwargs):
         """
         Wrapper which converts a requests.Response into our custom APIResponse
         object
@@ -63,7 +63,7 @@ class APIClient(metaclass=ABCMeta):
         :param kwargs:
         :return:
         """
-        r = await requests.request(*args, **kwargs)
+        r = requests.request(*args, **kwargs)
         return RESTAPIResponse(r)
 
     @abstractmethod

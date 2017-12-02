@@ -51,11 +51,11 @@ class BithumbREST(RESTAPIClient):
 
         return url , {'headers': headers}
 
-    async def public_query(self, endpoint, **kwargs):
-        return await self.query('GET', 'public/' + endpoint, **kwargs)
+    def public_query(self, endpoint, **kwargs):
+        return self.query('GET', 'public/' + endpoint, **kwargs)
 
-    async def private_query(self, endpoint, **kwargs):
-        return await self.query('GET', endpoint, authenticate=True, **kwargs)
+    def private_query(self, endpoint, **kwargs):
+        return self.query('GET', endpoint, authenticate=True, **kwargs)
 
     # endpoint_item_array = {
     #     "endpoint": endpoint
