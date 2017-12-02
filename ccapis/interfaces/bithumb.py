@@ -27,8 +27,8 @@ class Bithumb(BithumbREST):
     """
 
     @return_api_response(fmt.ticker)
-    async def ticker(self, base, counter=None):
-        return await self.public_query('ticker', params=base)
+    def ticker(self, base, counter=None):
+        return self.public_query('ticker', params=base)
 
     @return_api_response(fmt.order_book)
     #parameter: {'count':10(default 10)}
