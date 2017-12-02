@@ -94,6 +94,9 @@ class Formatter:
             [bid_price, ask_price, high, low, open, close, last, 24h_vol, ts]
         :param data: requests.response() obj
         :param args:
+            args[0] 1st argument of ticker, interface object,
+            args[1] 2nd argument of ticker, base,
+            args[2] 3rd argument of ticker, counter
         :param kwargs:
         :return: list
         """

@@ -10,12 +10,12 @@ log = logging.getLogger(__name__)
 
 
 class CoinoneFormatter(Formatter):
-    pass
-    # @staticmethod
-    # def ticker(data, *args, **kwargs):
-    #     data = data['data']
-    #     return (data['buy_price'], data['sell_price'], data['max_price'], data['min_price'],
-    #             data['opening_price'], data['opening_price'],data['buy_price'], data['units_traded'], data['date'])
+
+    @staticmethod
+    def ticker(data, *args, **kwargs):
+        # [bid_price, ask_price, high, low, open, close, last, 24h_vol, ts]
+        return (data['buy_price'], data['sell_price'], data['high'], data['low'],
+                data['first'], data['last'],data['last'], data['volume'], data['timestamp'])
 
     # @staticmethod
     # def order(data, *args, **kwargs):

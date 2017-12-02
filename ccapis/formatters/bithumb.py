@@ -13,9 +13,10 @@ class BithumbFormatter(Formatter):
 
     @staticmethod
     def ticker(data, *args, **kwargs):
+        #[bid_price, ask_price, high, low, open, close, last, 24h_vol, ts]
         data = data['data']
         return (data['buy_price'], data['sell_price'], data['max_price'], data['min_price'],
-                data['opening_price'], data['opening_price'],data['buy_price'], data['units_traded'], data['date'])
+                data['opening_price'], data['closing_price'],data['closing_price'], data['units_traded'], data['date'])
 
     @staticmethod
     def order(data, *args, **kwargs):
