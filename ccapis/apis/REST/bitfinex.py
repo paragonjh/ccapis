@@ -35,7 +35,7 @@ class BitfinexREST(RESTAPIClient):
             js = json.dumps(params)
             data = base64.standard_b64encode(js.encode('utf8'))
         else:
-            data = '/api/' + endpoint_path + self.nonce() + json.dumps(req)
+            data = '/api/' + endpoint_path + self.nonce() + json.dumps(params)
         h = hmac.new(self.secret.encode('utf8'), data, hashlib.sha384)
         signature = h.hexdigest()
         headers = {

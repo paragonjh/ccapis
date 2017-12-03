@@ -30,9 +30,6 @@ def return_api_response(formatter=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            print (func)
-            print (args)
-            print (kwargs)
             try:
                 r = func(*args, **kwargs)
             except Exception:
