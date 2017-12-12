@@ -28,10 +28,13 @@ class Bittrex(BittrexREST):
     """
 
     @return_api_response(fmt.ticker)
-    def ticker(self, base, counter):
+    async def ticker(self, base, counter, sync=True):
         pair = self.get_pair(base, counter)
         q = {'market': pair}
-        return self.public_query('getmarketsummary', params=q)
+        if not sync :
+            return self.public_query('getmarketsummary', params=q)
+        else:
+            return await self.async_public_query('getmarketsummary', params=q)
 
     @return_api_response(fmt.order_book)
     def order_book(self, pair, side='both', **kwargs):

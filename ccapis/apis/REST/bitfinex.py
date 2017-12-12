@@ -54,5 +54,11 @@ class BitfinexREST(RESTAPIClient):
     def private_query(self, endpoint, **kwargs):
         return self.query('POST', endpoint, authenticate=True, **kwargs)
 
+    async def async_public_query(self, endpoint, **kwargs):
+        return await self.async_query('GET', 'public/' + endpoint, **kwargs)
+
+    async def async_private_query(self, endpoint, **kwargs):
+        return await self.async_query('POST', endpoint, authenticate=True, **kwargs)
+
     def get_pair(self, base, count):
         return base+count

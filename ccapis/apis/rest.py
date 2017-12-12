@@ -8,6 +8,8 @@ from abc import ABCMeta, abstractmethod
 
 # Import Third-Party
 from requests import Response
+from aiohttp import ClientResponse
+
 import requests
 
 # Import Homebrew
@@ -26,6 +28,21 @@ class RESTAPIResponse(Response):
     @property
     def formatted(self):
         return self._formatted
+
+    @formatted.setter
+    def formatted(self, value):
+        self._formatted = value
+
+
+class ASYNCRESTAPIResponse(ClientResponse):
+    def __init__(self, req_response, formatted_json=None):
+        for k, v in req_response.__dict__.items():
+            self.__dict__[k] = v
+        self._formatted = formatted_json
+
+    @property
+    async def formatted(self):
+        return await self._formatted
 
     @formatted.setter
     def formatted(self, value):
@@ -132,4 +149,5 @@ class RESTAPIClient(metaclass=ABCMeta):
                   r.request.url, r.request.headers,
                   r.request.body, r.status_code)
         return r
+
 

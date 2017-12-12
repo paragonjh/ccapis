@@ -104,6 +104,12 @@ class KorbitREST(RESTAPIClient):
     def private_query(self, endpoint, **kwargs):
         return self.query('GET', endpoint, authenticate=True, **kwargs)
 
+    async def async_public_query(self, endpoint, **kwargs):
+        return await self.async_query('GET', endpoint, **kwargs)
+
+    async def async_private_query(self, endpoint, **kwargs):
+        return await self.async_query('GET', endpoint, authenticate=True, **kwargs)
+
     def get_pair(self, base, count):
         base = base.lower()
         count = count.lower()

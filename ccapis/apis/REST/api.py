@@ -8,9 +8,10 @@ from abc import ABCMeta, abstractmethod
 
 # Import Third-Party
 import requests
+import aiohttp
 
 # Import Homebrew
-from ccapis.apis.rest import RESTAPIResponse
+from ccapis.apis.rest import RESTAPIResponse, ASYNCRESTAPIResponse
 
 log = logging.getLogger(__name__)
 
@@ -66,6 +67,18 @@ class APIClient(metaclass=ABCMeta):
         r = requests.request(*args, **kwargs)
         return RESTAPIResponse(r)
 
+    @staticmethod
+    async def async_api_request(*args, **kwargs):
+        """
+        Wrapper which converts a requests.Response into our custom APIResponse
+        object
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        r = await aiohttp.ClientSession.request(*args, **kwargs)
+        return ASYNCRESTAPIResponse(r)
+
     @abstractmethod
     def sign(self, url, endpoint, endpoint_path, method_verb, *args, **kwargs):
         """
@@ -108,6 +121,40 @@ class APIClient(metaclass=ABCMeta):
             request_kwargs = kwargs
         log.debug("Making request to: %s, kwargs: %s", url, request_kwargs)
         r = self.api_request(method_verb, url, timeout=self.timeout,
+                             **request_kwargs)
+        log.debug("Made %s request made to %s, with headers %s and body %s. "
+                  "Status code %s", r.request.method,
+                  r.request.url, r.request.headers,
+                  r.request.body, r.status_code)
+        return r
+
+
+    async def async_query(self, method_verb, endpoint, authenticate=False,
+              *args, **kwargs):
+        """
+        Queries exchange using given data. Defaults to unauthenticated query.
+        :param method_verb: valid request type (PUT, GET, POST etc)
+        :param endpoint: endpoint path for the resource to query, sans the url &
+                         API version (i.e. '/btcusd/ticker/').
+        :param authenticate: Bool to determine whether or not a signature is
+                             required.
+        :param args: Optional args for requests.request()
+        :param kwargs: Optional Kwargs for self.sign() and requests.request()
+        :return: request.response() obj
+        """
+        if self.version:
+            endpoint_path = '/' + self.version + '/' + endpoint
+        else:
+            endpoint_path = '/' + endpoint
+
+        url = self.uri + endpoint_path
+        if authenticate:  # sign off kwargs and url before sending request
+            url, request_kwargs = self.sign(url, endpoint, endpoint_path,
+                                            method_verb, *args, **kwargs)
+        else:
+            request_kwargs = kwargs
+        log.debug("Making request to: %s, kwargs: %s", url, request_kwargs)
+        r = await self.async_api_request(method_verb, url, timeout=self.timeout,
                              **request_kwargs)
         log.debug("Made %s request made to %s, with headers %s and body %s. "
                   "Status code %s", r.request.method,
