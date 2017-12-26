@@ -1,9 +1,9 @@
 # Crypto Currency APIs 
 ccAPIs is a collection of API Clients for International Crypto Currency Exchanges.
 
-It comes with two parts - `ccapis.apis` represents the base level API
-interfaces, on top of which the second part - `ccapis.interfaces` - builds upon.
-`ccapis.apis` classes can be used without making use of the interface classes.
+It comes with two parts - `ccapi.api` represents the base level API
+interfaces, on top of which the second part - `ccapi.interfaces` - builds upon.
+`ccapi.api` classes can be used without making use of the interface classes.
 
 Donations welcome!
 BTC @ 3Fqm8RLGZduUkHrmRiNVE6794GumHthSq4
@@ -38,15 +38,15 @@ according to their liquidity and market volume.
 
 [^1]: This table considers standardized methods only, when describing the state. See section `Standardized Methods` for more
 
-# ccapis.apis.REST
+# ccapi.api.REST
 
-Classes found in `bitex.api.REST` provide wrapper classes and methods for Python's
+Classes found in `ccapi.api.REST` provide wrapper classes and methods for Python's
 `requests` module, including handling of each exchange's specific authentication
 procedure.
 
 An example:
 ```
-from ccapis.apis.REST import BithumbREST
+from ccapi.api.REST import BithumbREST
 
 bt = BithumbREST()
 bt.load_key('api.key')  # loads key and secret from given file;
@@ -80,8 +80,8 @@ Userid
 accountname
 ```
 
-# ccapis.apis.WSS
-`ccapis.apis.WSS` offers `Queue()`-based Websocket interface for a select few exchanges.
+# ccapi.api.WSS
+`ccapi.api.WSS` offers `Queue()`-based Websocket interface for a select few exchanges.
 The classes found within are very basic, and subject to further development. Private
 endpoints and trading are only sporadically implemented.
 
@@ -90,7 +90,7 @@ Websocket endpoint.
 
 ## Usage
 ```
-from.ccapis.apis.WSS import BitfinexWSS
+from.ccapi.api.WSS import BitfinexWSS
 import time
 
 wss = BitfinexWSS()
@@ -105,18 +105,18 @@ while not wss.data_q.empty():
 You can of course also access `data_q` while the `WebSocket` is still running 
 (i.e. before calling `stop()`).
 
-# ccapis.interfaces
+# ccapi.interfaces
 
-Built on top of `ccapis.apis`'s api classes are the slightly more sophisticated
-exchange interfaces in `bitex.interfaces`. These have been written to unify
+Built on top of `ccapi.api`'s api classes are the slightly more sophisticated
+exchange interfaces in `ccapi.interfaces`. These have been written to unify
 the diverse REST APIs of the implemented exchanges, by providing the same methods and method parameters
 across all of them (see next section, `Standardized Methods`, for more information).
 
 For example, querying tickers looks the same on all exchanges, as well as
-placing an order, using `bitex.interface`:
+placing an order, using `ccapi.interface`:
 
 ```
-from ccapis import Bithumb, Bitfinex, Upbit
+from ccapi import Bithumb, Bitfinex, Upbit
 bt = Bithumb(key_file='bt.key')
 bf = Bitfinex(key_file='bf.key')
 ub = Upbit(key_file='ub.key')
@@ -138,19 +138,19 @@ at an exchange via its API. They feature the following characteristics:
 
 - Each method has an identical method header across all interfaces
 - Its output is identical across all interfaces
-- Each method returns a `ccapis.apis.rest.RESTAPIResponse` object; these behave like `requests.Request` objects, with the addition
+- Each method returns a `ccapi.api.rest.RESTAPIResponse` object; these behave like `requests.Request` objects, with the addition
 of a new attribute, `formatted`, which stores a standardized representation of the data queried.
 
 
 
-# ccapis.formatters
+# ccapi.formatters
 
 This module provide formatters for the standardized methods, formatting their json output into a uniform layout. They are a work in progress feature.
 
 Be mindful that, in order to provide a unified output format, some fields have been dropped in the formatted output! If you rely on one of these dropped fields, be sure to use the `RESTAPIResponse`'s `json` attribute instead, and parse the json yourself:
 
 ```
-from bitex import Kraken
+from ccapi import Kraken
 bf = Bitfinex()
 response = bf.ticker()
 print(response.formatted)  # show formatted data
@@ -179,5 +179,5 @@ Manually, using the supplied `setup.py` file:
 
 or via pip
 
-`pip install ccapis`
+`pip install ccapi`
 
